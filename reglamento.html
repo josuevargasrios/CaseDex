@@ -11,16 +11,27 @@
 
     <div class="casedex-container-reglamento">
         
-        <div class="reglamento-tools">
+        <div class="reglamento-tools" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <button class="btn-regresar" onclick="window.location.href='index.html'">
-                ⬅️ Volver
+                ⬅️ Volver al Centro de Control
             </button>
+            <h2 style="color: #00ff66; margin: 0; font-family: monospace;">📜 REGLAMENTO INTERNO CASEDEX</h2>
         </div>
 
-        <div class="contenedor-pdf-tactico">
-            <iframe src="reglamento.pdf" type="application/pdf" class="visor-pdf">
-                <p>Tu sistema no soporta la vista previa. <a href="reglamento.pdf" target="_blank" style="color: #00ff66;">Descarga el reglamento aquí.</a></p>
-            </iframe>
+        <div class="contenedor-pdf-tactico" style="width: 100%; height: 82vh; border: 3px solid #00ff66; border-radius: 12px; overflow: hidden; box-shadow: 0 0 15px rgba(0, 255, 102, 0.3); background: #121214;">
+            
+            <object data="reglamento.pdf" type="application/pdf" width="100%" height="100%">
+                <iframe src="reglamento.pdf" width="100%" height="100%" style="border: none;">
+                    <p style="color: #ffffff; padding: 20px; text-align: center;">
+                        Tu navegador o dispositivo no soporta la previsualización de PDFs en vivo. 
+                        <br><br>
+                        <a href="reglamento.pdf" target="_blank" class="btn-regresar" style="color: #00ff66; text-decoration: underline;">
+                            📥 Haz clic aquí para descargar/abrir el Reglamento directamente
+                        </a>
+                    </p>
+                </iframe>
+            </object>
+
         </div>
 
     </div>
