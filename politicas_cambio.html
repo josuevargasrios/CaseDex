@@ -2,28 +2,67 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200">
-    <title>CaseDex - Reglamento Interno 📜</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseDex - Politicas de Cambio 🔄</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📜</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔄</text></svg>">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body class="body-reglamento">
 
-    <div class="casedex-container-reglamento">
+    <div class="casedex-container-reglamento" style="padding: 10px;">
         
-        <div class="reglamento-tools">
+        <div class="reglamento-tools" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <button class="btn-regresar" onclick="window.location.href='index.html'">
                 ⬅️ Volver
             </button>
         </div>
 
-        <div class="contenedor-pdf-tactico">
-            <iframe src="devoluciones.pdf" type="application/pdf" class="visor-pdf">
-                <p>Tu sistema no soporta la vista previa. <a href="devoluciones.pdf" target="_blank" style="color: #00ff66;">Descarga el reglamento aquí.</a></p>
-            </iframe>
+        <div id="contenedor-canvas-pdf" style="width: 100%; height: 82vh; border: 3px solid #00ff66; border-radius: 12px; overflow-y: auto; background: #121214; text-align: center; padding: 10px 0; box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);">
+            <p id="cargando-texto" style="color: #00ff66; font-family: monospace;">⏳ Cargando documento táctico...</p>
         </div>
 
     </div>
+
+    <script>
+        // Configurar worker de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const urlPdf = 'devoluciones.pdf';
+        const contenedor = document.getElementById('contenedor-canvas-pdf');
+
+        // Cargar y renderizar todas las páginas del PDF directamente en Canvas
+        pdfjsLib.getDocument(urlPdf).promise.then(pdf => {
+            document.getElementById('cargando-texto').remove();
+
+            for (let numPagina = 1; numPagina <= pdf.numPages; numPagina++) {
+                pdf.getPage(numPagina).then(page => {
+                    const canvas = document.createElement('canvas');
+                    canvas.style.margin = "10px auto";
+                    canvas.style.display = "block";
+                    canvas.style.maxWidth = "95%";
+                    canvas.style.borderRadius = "8px";
+                    canvas.style.boxShadow = "0 0 10px rgba(0,0,0,0.8)";
+                    
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    contenedor.appendChild(canvas);
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }
+        }).catch(error => {
+            console.error('Error al cargar PDF:', error);
+            contenedor.innerHTML = `<p style="color: #ff4444; padding: 20px;">❌ No se pudo cargar el archivo reglamento.pdf.<br><a href="reglamento.pdf" style="color: #00ff66;">Haz clic aquí para abrir directamente</a></p>`;
+        });
+    </script>
 
 </body>
 </html>
