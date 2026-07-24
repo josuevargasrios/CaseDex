@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200">
+    <title>CaseDex - Centro de Control</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💚</text></svg>">
+</head>
+<body>
+    <div class="casedex-container text-center">
+        
+        <header class="pokedex-header">
+            <div class="header-top">
+                <div class="pokedex-camera"></div>
+                <div class="pokedex-lights">
+                    <span class="light green-neon"></span>
+                    <span class="light dark-green"></span>
+                    <span class="light white"></span>
+                </div>
+            </div>
+            <h1>💚 CaseDex</h1>
+            <p>Mapa de sucursales</p>
+        </header>
+
+        <nav class="pestanas-operativas">
+            <button class="btn-tab" onclick="window.location.href='orden_cajones.html'">📋 ORDEN DE CAJONES</button>
+            <button class="btn-tab" onclick="window.location.href='check_ventas.html'">✅ CHECK DE VENTAS</button>
+            <button class="btn-tab" onclick="window.location.href='politicas_cambio.html'">🔄 POLÍTICAS DE CAMBIO</button>
+            <button class="btn-tab" onclick="window.location.href='reglamento.html'">📜 REGLAMENTO</button>
+        </nav>
+
+        <div class="search-wrapper" style="margin-bottom: 25px;">
+            <input type="text" id="buscador-sucursales" placeholder="🔍 Buscar sucursal o gimnasio (Ej: Andino, Titán)..." autocomplete="off">
+        </div>
+
+        <div class="mapa-region-pokemon">
+            <div class="mapa-fondo"></div>
+            <div class="mapa-textura"></div>
+
+            <div id="gym-andino" class="gimnasio-nodo" onclick="viajarA('CC Andino')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Andino</div>
+            </div>
+
+            <div id="gym-nuestro" class="gimnasio-nodo" onclick="viajarA('CC Nuestro')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Nuestro</div>
+            </div>
+
+            <div id="gym-aeropuerto" class="gimnasio-nodo" onclick="viajarA('Aeropuerto')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">Aeropuerto</div>
+            </div>
+
+            <div id="gym-colina" class="gimnasio-nodo" onclick="viajarA('CC Colina')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Colina</div>
+            </div>
+
+            <div id="gym-unicentro" class="gimnasio-nodo" onclick="viajarA('CC Unicentro')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Unicentro</div>
+            </div>
+
+            <div id="gym-colina" class="gimnasio-nodo" onclick="viajarA('CC Parque La Colina')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Colina</div>
+            </div>
+
+            <div id="gym-hayuelos" class="gimnasio-nodo" onclick="viajarA('CC Hayuelos')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Hayuelos</div>
+            </div>
+
+            <div id="gym-titan" class="gimnasio-nodo" onclick="viajarA('CCTitan Plaza')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Titan Plaza</div>
+            </div>
+
+            <div id="gym-centro-mayor" class="gimnasio-nodo" onclick="viajarA('CC Centro Mayor')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Centro Mayor</div>
+            </div>
+
+            <div id="gym-multiplaza" class="gimnasio-nodo" onclick="viajarA('CC Multiplaza')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC Multiplaza</div>
+            </div>
+
+            <div id="gym-eden" class="gimnasio-nodo" onclick="viajarA('CC El Eden')">
+                <div class="gym-icon">🏟️</div>
+                <div class="gym-name">CC El Eden</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Mapeo de páginas por sucursal
+        const paginasSucursales = {
+            'CC Andino': 'cc_Andino.html',
+            'Titan Plaza': 'cc_Titan.html' // Si aún no existe el HTML, mostrará alerta informativa
+        };
+
+        // 1. Redirección táctica
+        function viajarA(nombreTienda) {
+            const destino = paginasSucursales[nombreTienda];
+            
+            if (nombreTienda === 'CC Andino') {
+                window.location.href = `${destino}?tienda=${encodeURIComponent(nombreTienda)}`;
+            } else {
+                alert(`📍 La base de datos y mapa táctico para "${nombreTienda}" están en preparación o fuera de órbita temporalmente. 🚀`);
+            }
+        }
+
+        // 2. Escaneo en tiempo real de nodos en el mapa
+        const buscador = document.getElementById('buscador-sucursales');
+        
+        buscador.addEventListener('input', () => {
+            const consulta = buscador.value.toLowerCase().trim();
+            
+            const gymAndino = document.getElementById('gym-andino');
+            const gymTitan = document.getElementById('gym-titan');
+
+            // Escaneo CC Andino
+            if (consulta !== "" && "cc andino".includes(consulta)) {
+                gymAndino.classList.add('neon-active');
+            } else {
+                gymAndino.classList.remove('neon-active');
+            }
+
+            // Escaneo Titán Plaza
+            if (consulta !== "" && ("titan".includes(consulta) || "plaza".includes(consulta) || "cc titan plaza".includes(consulta))) {
+                gymTitan.classList.add('neon-active');
+            } else {
+                gymTitan.classList.remove('neon-active');
+            }
+        });
+    </script>
+</body>
+</html>
